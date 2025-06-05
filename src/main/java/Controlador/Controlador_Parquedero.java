@@ -20,15 +20,15 @@ import java.util.Map;
  */
 public class Controlador_Parquedero {
     private Map<String, Modelo_UbicacnionVehiculo>ubicaciones;
-    private double valorHoraCarro;
-    private double valorHoraMoto;
+    private LinkedList<Vehiculo> registrosDiarios;
+    private LinkedList<Vehiculo> vehiculo; 
     private boolean parquederoAbierto;
     private String caja_diaria;
     
     public Controlador_Parquedero(){
         this.ubicaciones = UbicacionesParquedero();
-        this.valorHoraCarro = 0.0;
-        this.valorHoraMoto = 0.0;
+        this.registrosDiarios = new LinkedList<>();
+        this.vehiculo = new LinkedList<>();
         this.parquederoAbierto = false;
     }
 
@@ -38,8 +38,46 @@ public class Controlador_Parquedero {
             String NUbicaciones = "A" + U;
             ubicacionesParquedero.put(NUbicaciones, new Modelo_UbicacnionVehiculo());
         }
-        return ubicaciones;
+        return ubicacionesParquedero;
     }
+    private Modelo_UbicacnionVehiculo asignarPuesto(String tipo, String placa, LocalDate horaIngreso) {
+    for (Map.Entry<String, Modelo_UbicacnionVehiculo> entry : ubicaciones.entrySet()) {
+        Modelo_UbicacnionVehiculo ubicacion = entry.getValue();
+        if (ubicacion.getUbicacionDisponible()) {
+            Vehiculo nuevoVehiculo = new Vehiculo();
+            nuevoVehiculo.setPlaca(placa);
+            nuevoVehiculo.setTipo(tipo);
+            nuevoVehiculo.setHoraIngreso(horaIngreso); // Asegúrate que exista este método en Vehiculo
+
+            ubicacion.ocupar(nuevoVehiculo, horaIngreso);
+            System.out.println("Vehículo asignado a la ubicación: " + entry.getKey());
+            return ubicacion;
+        }
+    }
+
+    System.out.println("No hay puestos disponibles para el tipo de vehículo: " + tipo);
+    return null;
+}
+    public boolean registrarVehiculo(String placa, String tipo, LocalDate hora_ingreso) {
+    for (Vehiculo registro : registrosDiarios) {
+        if (registro.getPlaca().equalsIgnoreCase(placa) && registro.getHoraSalida() == null) {
+            System.out.println("El vehículo con placa " + placa + " ya está en el parqueadero.");
+            return false;
+        }
+    }
+
+    Modelo_UbicacnionVehiculo ubicacionAsignada = asignarPuesto(tipo, placa, hora_ingreso);
+    if (ubicacionAsignada == null) {
+        System.out.println("Lo sentimos, no hay puestos disponibles.");
+        return false;
+    }
+
+    Vehiculo nuevo = ubicacionAsignada.getVehiculo(); // Vehículo recién asignado
+    registrosDiarios.add(nuevo);
+
+    System.out.println("Vehículo con placa " + placa + " registrado exitosamente.");
+    return true;
+}
     public boolean retirarVehiculo(String placa, String caja){
         if(!parquederoAbierto){
             System.out.println("El parquedero no ha abierto");
@@ -69,7 +107,6 @@ public class Controlador_Parquedero {
         return true;
         
     }
-
     private long calcularTiempo(LocalDate horaIngreso) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -77,4 +114,9 @@ public class Controlador_Parquedero {
     private double calcularPago(Vehiculo vehiculo, long tiempoParquedero) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    private double CajaParquedero(){
+         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

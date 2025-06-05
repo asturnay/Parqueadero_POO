@@ -11,7 +11,7 @@ public class Modelo_UbicacnionVehiculo {
     private boolean Ubi_Disponible;
     private Vehiculo vehiculo;
     private LocalDate hora_ingreso;
-    //private LocalDate hora_salida;
+    private LocalDate hora_salida;
     
     public Modelo_UbicacnionVehiculo(){
     }
@@ -20,8 +20,8 @@ public class Modelo_UbicacnionVehiculo {
         this.id_Ubicacion = idUbi;
         this.Ubi_Disponible = ubiDis = true;
         this.vehiculo = vehi = null;
-        this.hora_ingreso = Hoin = null;
-        //this.hora_salida = HoSal;
+        this.hora_ingreso = Hoin;
+        this.hora_salida = HoSal;
     }    
     // set para modelo Ubicacion vehiculos
     public void setIdUbicacion(String idUbi){
@@ -50,15 +50,15 @@ public class Modelo_UbicacnionVehiculo {
         return this.vehiculo;
     }
     public LocalDate getHoraIngreso(){
-        return this.hora_ingreso;
+        return hora_ingreso;
     }
     
     // ocupa un puesto en la ubicacion
   
-     public void ocupar(Vehiculo vehiculo, LocalDate horaIngreso) {
-        this.Ubi_Disponible = false;
+    public void ocupar(Vehiculo vehiculo, LocalDate horaIngreso) {
         this.vehiculo = vehiculo;
-        this.hora_ingreso = horaIngreso;
+        this.Ubi_Disponible = false;
+        this.hora_ingreso = vehiculo.getHoraIngreso();
     }
      
      //desocupa el puesto

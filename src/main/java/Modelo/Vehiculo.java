@@ -1,48 +1,52 @@
 package Modelo;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Daniel
  */
 public class Vehiculo {
     private String placa;
-    private String moto;
-    private String carro;
-    private String titular;
+    private String tipo;
+    private LocalDate hora_ingreso;
+    private LocalDate hora_salida;
     // public vacio 
     public Vehiculo(){
     }
     
-    public Vehiculo(String pla, String mo,String car, String tit){
+    public Vehiculo(String pla, String tip, LocalDate Hoin, LocalDate HoSal){
         this.placa = pla;
-        this.moto = mo;
-        this.carro = car;
-        this.titular = tit;
+        this.tipo = tip;
+        this.hora_ingreso = Hoin;
+        this.hora_salida = HoSal; 
     }
     // metodos set para vehiculo
     public void setPlaca(String pla){
         this.placa = pla;
     }
-    public void setCarro(String car){
-        this.carro = car;
+    public void setTipo(String car){
+        this.tipo = car;
     }
-    public void setMoto(String mo){
-        this.moto = mo;
+     public void setHoraIngreso(LocalDate Hoin){
+        this.hora_ingreso = Hoin;
     }
-    public void setDueño(String tit){
-        this.titular = tit;
+      public void setHoraSalida(LocalDate HoSal){
+        this.hora_ingreso = HoSal;
     }
     // metodos get para vehiculo
     public String getPlaca(){
         return this.placa;
     }
-    public String getCarro(){
-        return this.carro;
+    public String getTipo(){
+        return this.tipo;
     }
-    public String getMoto(){
-        return this.moto;
-    }
-    public String getDueno(){
-        return this.titular;
-    }
+    public LocalDate getHoraIngreso(){
+        return this.hora_ingreso;
+        }
+    public LocalDate getHoraSalida(){
+        return this.hora_salida;
+        }
+    
+    
 }

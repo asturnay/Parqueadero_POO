@@ -8,7 +8,7 @@ package com.mycompany.parqueadero_poo;
 /**
  *
  * @author Daniel
- */
+*/
 public class Parqueadero_POO {
 
     public static void main(String[] args) {
