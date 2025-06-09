@@ -1,6 +1,6 @@
 package Modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -10,7 +10,7 @@ public class Modelo_UbicacnionVehiculo {
     private String Ubicacion;
     private boolean Ubi_Disponible = true ;
     private Vehiculo vehiculo = null;
-    private LocalDate hora_ingreso = null ; 
+    private LocalDateTime hora_ingreso = null ; 
     
     public Modelo_UbicacnionVehiculo() { 
     }
@@ -19,7 +19,7 @@ public class Modelo_UbicacnionVehiculo {
         this.Ubicacion = idUbi;
     }
 
-    public Modelo_UbicacnionVehiculo(String Ubi, boolean ubiDis, Vehiculo vehi, LocalDate Hoin){
+    public Modelo_UbicacnionVehiculo(String Ubi, boolean ubiDis, Vehiculo vehi, LocalDateTime Hoin){
         this.Ubicacion = Ubi;
         this.Ubi_Disponible = ubiDis;
         this.vehiculo = vehi;     
@@ -38,7 +38,7 @@ public class Modelo_UbicacnionVehiculo {
         this.vehiculo = vehi;
     }
 
-    public void setHoraIngreso(LocalDate Hoin) {
+    public void setHoraIngreso(LocalDateTime Hoin) {
         this.hora_ingreso = Hoin;
     }
     public String getUbicacion() {
@@ -53,11 +53,11 @@ public class Modelo_UbicacnionVehiculo {
         return this.vehiculo;
     }
 
-    public LocalDate getHoraIngreso() {
+    public LocalDateTime getHoraIngreso() {
         return hora_ingreso;
     }
     // Ocupa un puesto en la ubicación
-    public void ocupar(Vehiculo vehiculo, LocalDate horaIngreso) {
+    public void ocupar(Vehiculo vehiculo, LocalDateTime horaIngreso) {
         this.vehiculo = vehiculo;
         this.Ubi_Disponible = false;
         this.hora_ingreso = horaIngreso;

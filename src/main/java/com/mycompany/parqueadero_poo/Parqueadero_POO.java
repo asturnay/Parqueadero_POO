@@ -1,14 +1,14 @@
 package com.mycompany.parqueadero_poo;
 
 import Controlador.Controlador_Parquedero;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Parqueadero_POO {
 
-    // Variables estáticas
+    // Variables estaticas
 
-private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
     private static Controlador.Controlador_Parquedero controlador = null; //
 
     public static void main(String[] args) {
@@ -17,12 +17,12 @@ private static Scanner scanner = new Scanner(System.in);
         menuPrincipal();
     }
 
-    // Método principal del menú
+    // Metodo principal del menu
     public static void menuPrincipal() {
-        String op; 
+        String op;
         do {
             mostrarMenu();
-            op = scanner.nextLine(); 
+            op = scanner.nextLine();
 
             switch (op) {
                 case "1":
@@ -47,13 +47,11 @@ private static Scanner scanner = new Scanner(System.in);
                     salirSistema();
                     break;
                 default:
-                    System.out.println(" Por favor, ingrese un número del 1 al 7.");
+                    System.out.println(" Por favor, ingrese un numero del 1 al 7.");
                     break;
             }
-        } while (!op.equals("6") && !op.equals("7")); 
+        } while (!op.equals("6") && !op.equals("7"));
     }
-
-    
 
     private static void mostrarMenu() {
         System.out.println("Menu");
@@ -64,7 +62,6 @@ private static Scanner scanner = new Scanner(System.in);
             System.out.println("Parqueadero: " + (nit != null && !nit.isEmpty() ? nit : "No Configurado") +
                                " | Tarifa/Hora: $" + valorHora +
                                " | Estado: " + (abierto ? "ABIERTO" : "CERRADO"));
-       
         }
 
         System.out.println("1. Abrir Parqueadero");
@@ -77,21 +74,20 @@ private static Scanner scanner = new Scanner(System.in);
         System.out.print("Seleccione una opcion: ");
     }
 
-    
-
     private static void verificarControlador() {
         if (controlador == null) {
             System.out.println("Error: El parqueadero no ha sido configurado ni abierto.");
         }
     }
+
     public static void configurarYObrirParqueadero() {
         if (controlador == null) {
-            controlador = new Controlador_Parquedero(); 
+            controlador = new Controlador_Parquedero();
         }
         if (controlador.ParqueaderoAbierto()) {
-            System.out.println("El parqueadero ya está configurado y abierto.");
+            System.out.println("El parqueadero ya esta configurado y abierto.");
             System.out.println("NIT: " + controlador.getParqueadero().getNit() +
-                               ", Tarifa/Hora: $" +  controlador.getParqueadero().getValorHora());
+                               ", Tarifa/Hora: $" + controlador.getParqueadero().getValorHora());
             return;
         }
 
@@ -117,7 +113,7 @@ private static Scanner scanner = new Scanner(System.in);
         System.out.print("Tipo de vehiculo (carro/moto/otro): ");
         String tipo = scanner.nextLine();
 
-        LocalDate horaEntrada = LocalDate.now();
+        LocalDateTime horaEntrada = LocalDateTime.now();
 
         if (controlador.registrarVehiculo(placa, tipo, horaEntrada)) {
             System.out.println("¡Vehiculo registrado con exito!");
@@ -158,7 +154,7 @@ private static Scanner scanner = new Scanner(System.in);
         System.out.println("Total vehiculos que ingresaron hoy: " + controlador.getTotalVehiculosHoy());
         System.out.println("Caja diaria actual: $" + controlador.getCajaDiaria());
     }
-    
+
     public static void realizarCierreDeCajaYSalir() {
         if (controlador == null) {
             System.out.println("El parqueadero no ha sido abierto.");
@@ -170,7 +166,7 @@ private static Scanner scanner = new Scanner(System.in);
     }
 
     public static void salirSistema() {
-        System.out.println("Saliendo del sistema de gestión de parqueadero");
+        System.out.println("Saliendo del sistema de gestion de parqueadero");
         if (scanner != null) {
             scanner.close();
         }

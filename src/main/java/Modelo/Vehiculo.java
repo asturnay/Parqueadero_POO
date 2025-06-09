@@ -1,17 +1,17 @@
 package Modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class Vehiculo {
     private String placa;
     private String tipo;
-    private LocalDate hora_ingreso;
-    private LocalDate hora_salida;
+    private LocalDateTime hora_ingreso;
+    private LocalDateTime hora_salida;
 
     public Vehiculo() {
     }
-    public Vehiculo(String pla, String tip, LocalDate Hoin, LocalDate HoSal) {
+    public Vehiculo(String pla, String tip, LocalDateTime Hoin, LocalDateTime HoSal) {
         this.placa = pla;
         this.tipo = tip;
         this.hora_ingreso = Hoin;
@@ -24,10 +24,10 @@ public class Vehiculo {
     public void setTipo(String car) {
         this.tipo = car;
     }
-    public void setHoraIngreso(LocalDate Hoin) {
+    public void setHoraIngreso(LocalDateTime Hoin) {
         this.hora_ingreso = Hoin;
     }
-    public void setHoraSalida(LocalDate HoSal) {
+    public void setHoraSalida(LocalDateTime HoSal) {
         this.hora_salida = HoSal; 
     }
     // Métodos get para Vehiculo
@@ -37,10 +37,10 @@ public class Vehiculo {
     public String getTipo() {
         return this.tipo;
     }
-    public LocalDate getHoraIngreso() {
+    public LocalDateTime getHoraIngreso() {
         return this.hora_ingreso;
     }
-    public LocalDate getHoraSalida() {
+    public LocalDateTime getHoraSalida() {
         return this.hora_salida;
     }
 }

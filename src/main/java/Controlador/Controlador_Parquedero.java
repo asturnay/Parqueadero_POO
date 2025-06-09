@@ -4,7 +4,7 @@ import Modelo.Modelo_UbicacnionVehiculo;
 import Modelo.Vehiculo;
 import Modelo.Parqueadero;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime; 
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class Controlador_Parquedero {
     public void AsignarParqueadero(String nit, double valorHora) {
         this.parqueadero.setNit(nit);
         this.parqueadero.setValorHora(valorHora);
-        System.out.println("Información del parqueadero: NIT=  " + nit + ", Valor por Hora=$  " + valorHora);
+        System.out.println("Informacion del parqueadero: NIT=  " + nit + ", Valor por Hora=$  " + valorHora);
     }
 
     public Parqueadero getParqueadero() {
@@ -48,7 +48,7 @@ public class Controlador_Parquedero {
         return ubicacionesParqueadero;
     }
 
-    private Modelo_UbicacnionVehiculo asignarPuesto(String tipo, String placa, LocalDate horaIngreso) {
+    private Modelo_UbicacnionVehiculo asignarPuesto(String tipo, String placa, LocalDateTime horaIngreso) {
         for (Map.Entry<String, Modelo_UbicacnionVehiculo> par : ubicaciones.entrySet()) {
             Modelo_UbicacnionVehiculo ubicacion = par.getValue();
             if (ubicacion.getUbicacionDisponible()) {
@@ -58,7 +58,7 @@ public class Controlador_Parquedero {
                 nuevoVehiculo.setHoraIngreso(horaIngreso);
 
                 ubicacion.ocupar(nuevoVehiculo, horaIngreso);
-                System.out.println("Vehículo asignado a la ubicación: " + par.getKey());
+                System.out.println("Vehiculo asignado a la ubicacion: " + par.getKey());
                 return ubicacion;
             }
         }
@@ -66,35 +66,35 @@ public class Controlador_Parquedero {
         return null;
     }
 
-    public boolean registrarVehiculo(String placa, String tipo, LocalDate hora_ingreso) {
+    public boolean registrarVehiculo(String placa, String tipo, LocalDateTime horaIngreso) { 
         if (!parqueaderoAbierto) {
-            System.out.println("El parqueadero no está abierto");
-            return false;
-        }
-
-        for (Modelo_UbicacnionVehiculo ubicacion : ubicaciones.values()) {
-            if (!ubicacion.getUbicacionDisponible() && ubicacion.getVehiculo().getPlaca().equalsIgnoreCase(placa)) {
-                System.out.println("El vehículo con placa " + placa + " ya está en el parqueadero.");
-                return false;
-            }
-        }
-
-        Modelo_UbicacnionVehiculo ubicacionAsignada = asignarPuesto(tipo, placa, hora_ingreso);
-        if (ubicacionAsignada == null) {
-            System.out.println("No hay puestos disponibles.");
-            return false;
-        }
-
-        Vehiculo nuevo = ubicacionAsignada.getVehiculo();
-        registrosDiarios.add(nuevo);
-
-        System.out.println("Vehículo con placa " + placa + " registrado exitosamente.");
-        return true;
+        System.out.println("El parqueadero no esta abierto");
+        return false;
     }
+    for (Modelo_UbicacnionVehiculo ubicacion : ubicaciones.values()) {
+        if (!ubicacion.getUbicacionDisponible() && ubicacion.getVehiculo().getPlaca().equalsIgnoreCase(placa)) {
+            System.out.println("El vehiculo con placa " + placa + " ya esta en el parqueadero.");
+            return false;
+        }
+    }
+    Modelo_UbicacnionVehiculo ubicacionAsignada = asignarPuesto(tipo, placa, horaIngreso);
+    if (ubicacionAsignada == null) {
+        System.out.println("No hay puestos disponibles.");
+        return false;
+    }
+    Vehiculo nuevo = ubicacionAsignada.getVehiculo();
+    
+    nuevo.setHoraIngreso(horaIngreso);
+    registrosDiarios.add(nuevo);
+
+    System.out.println("Vehiculo con placa " + placa + " registrado exitosamente.");
+    return true;
+}
+
 
     public boolean retirarVehiculo(String placa) {
         if (!parqueaderoAbierto) {
-            System.out.println("El parqueadero no está abierto.");
+            System.out.println("El parqueadero no esta abierto.");
             return false;
         }
 
@@ -107,14 +107,16 @@ public class Controlador_Parquedero {
         }
 
         if (ubicacionEncontrada == null) {
-            System.out.println("No se encontró el vehículo con placa: " + placa );
+            System.out.println("No se encontro el vehiculo con placa: " + placa );
             return false;
         }
 
         Vehiculo vehiculoRetirado = ubicacionEncontrada.getVehiculo();
-        long tiempoParqueaderoHoras = ChronoUnit.HOURS.between(vehiculoRetirado.getHoraIngreso(), LocalDate.now());
 
-        if (tiempoParqueaderoHoras == 0 && !vehiculoRetirado.getHoraIngreso().isEqual(LocalDate.now())) {
+        
+        long tiempoParqueaderoHoras = ChronoUnit.HOURS.between(vehiculoRetirado.getHoraIngreso(), LocalDateTime.now());
+
+        if (tiempoParqueaderoHoras == 0 && !vehiculoRetirado.getHoraIngreso().isEqual(LocalDateTime.now())) {
             tiempoParqueaderoHoras = 1;
         } else if (tiempoParqueaderoHoras == 0) {
              tiempoParqueaderoHoras = 1;
@@ -122,13 +124,13 @@ public class Controlador_Parquedero {
 
         double cobro = calcularPago(vehiculoRetirado.getTipo(), tiempoParqueaderoHoras);
 
-        vehiculoRetirado.setHoraSalida(LocalDate.now());
+        vehiculoRetirado.setHoraSalida(LocalDateTime.now());
 
         this.caja_diaria += cobro;
 
         ubicacionEncontrada.desocupar();
 
-        System.out.println("Vehículo con placa " + placa + " retirado de la ubicación " + ubicacionEncontrada.getUbicacion());
+        System.out.println("Vehiculo con placa " + placa + " retirado de la ubicacion " + ubicacionEncontrada.getUbicacion());
         System.out.println("Cobro total: $" + cobro);
         return true;
     }
@@ -167,24 +169,24 @@ public class Controlador_Parquedero {
             this.parqueaderoAbierto = false;
             System.out.println("El parqueadero ha sido cerrado.");
         } else {
-            System.out.println("El parqueadero ya está cerrado.");
+            System.out.println("El parqueadero ya esta cerrado.");
         }
     }
 
     public void mostrarEstadoPuestos() {
         System.out.println("  ESTADO DEL PARQUEADERO ");
         if (!parqueaderoAbierto) {
-            System.out.println("El parqueadero está cerrado.");
+            System.out.println("El parqueadero esta cerrado.");
             return;
         }
         for (Map.Entry<String, Modelo_UbicacnionVehiculo> entry : ubicaciones.entrySet()) {
             String id = entry.getKey();
             Modelo_UbicacnionVehiculo ubicacion = entry.getValue();
             if (ubicacion.getUbicacionDisponible()) {
-                System.out.println("Ubicación " + id + ": Disponible");
+                System.out.println("Ubicacion " + id + ": Disponible");
             } else {
                 Vehiculo veh = ubicacion.getVehiculo();
-                System.out.println("Ubicación " + id + ": Ocupado por [" + veh.getTipo() + "] - Placa: " + veh.getPlaca() + " (Ingreso: " + veh.getHoraIngreso() + ")");
+                System.out.println("Ubicacion " + id + ": Ocupado por [" + veh.getTipo() + "] - Placa: " + veh.getPlaca() + " (Ingreso: " + veh.getHoraIngreso() + ")");
             }
         }
     }
@@ -196,18 +198,17 @@ public class Controlador_Parquedero {
             return;
         }
 
-        System.out.println("REPORTE DE CIERRE DE CAJA " + LocalDate.now() );        
+        System.out.println("REPORTE DE CIERRE DE CAJA " + LocalDateTime.now());        
         System.out.println("NIT del Parqueadero: " + parqueadero.getNit());
         System.out.println("Valor por Hora Establecido: $" +  parqueadero.getValorHora());
         
-
         double totalGanancias = getCajaDiaria();
         int vehiculosAtendidos = 0;
         int vehiculosPendientes = 0;
 
-        System.out.println(" Detalles de Vehículos ");
+        System.out.println(" Detalles de Vehiculos ");
         if (registrosDiarios.isEmpty()) {
-            System.out.println("No se registraron movimientos de vehículos hoy.");
+            System.out.println("No se registraron movimientos de vehiculos hoy.");
         } else {
             for (Vehiculo v : registrosDiarios) {
                 System.out.print("Placa: " + v.getPlaca() + ", Tipo: " + v.getTipo() + ", Ingreso: " + v.getHoraIngreso());
@@ -219,10 +220,9 @@ public class Controlador_Parquedero {
                 }
             }
         }
-        System.out.println("Total de vehículos que ingresaron hoy: " + getTotalVehiculosHoy());
-        System.out.println("Vehículos retirados hoy: " + vehiculosAtendidos);
-        System.out.println("Vehículos que aún permanecen en el parqueadero: " + vehiculosPendientes);
+        System.out.println("Total de vehiculos que ingresaron hoy: " + getTotalVehiculosHoy());
+        System.out.println("Vehiculos retirados hoy: " + vehiculosAtendidos);
+        System.out.println("Vehiculos que aun permanecen en el parqueadero: " + vehiculosPendientes);
         System.out.println(" Dinero en Caja Esperado: $" + totalGanancias );
-        
     }
 }
